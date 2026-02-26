@@ -1,0 +1,21 @@
+services:
+  ctrl-world:
+    build: .
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - CUDA_VISIBLE_DEVICES=0
+      - XLA_PYTHON_CLIENT_MEM_FRACTION=0.4
+    volumes:
+      - ./checkpoints:/workspace/checkpoints
+      - ./dataset_example:/workspace/dataset_example
+      - ./dataset_meta_info:/workspace/dataset_meta_info
+      - ./synthetic_traj:/workspace/synthetic_traj
+    stdin_open: true
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
